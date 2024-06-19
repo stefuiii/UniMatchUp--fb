@@ -144,7 +144,7 @@ export const AddTutPost = () => {
               onChange={(date) => setDate(date)}
               showTimeSelect
               dateFormat="Pp"
-              customInput={<Input bg="white"/>}
+              customInput={<Input bg="white" color="black"/>}
             />
           </FormControl>
 
