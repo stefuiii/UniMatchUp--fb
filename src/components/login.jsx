@@ -26,7 +26,7 @@ export const Login = (props) => {
           .then((userCredential) => {
             console.log(userCredential);
             alert('Login successfull!');
-            navigate('/addpost');
+            navigate('/addfoodpost');
           })
           .catch((error) => {
             console.log(error);
@@ -45,7 +45,7 @@ export const Login = (props) => {
         <Box className="auth-form-container" 
         p={10} 
         borderWidth={3} 
-        borderRadius="lg"
+        borderRadius="20px"
         width={400}>
             <Heading as="h1" mb={4}>Login</Heading>
         <form className="login-form" action="" onSubmit={handleSubmit}>

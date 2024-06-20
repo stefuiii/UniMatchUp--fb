@@ -38,7 +38,7 @@ export const Register = (props) => {
         <Box className="auth-form-container" 
         p={10} 
         borderWidth={3} 
-        borderRadius="lg"
+        borderRadius="20px"
         width={400}>
         <Heading as="h2" mb={5}>Register</Heading>
         <form className="register-form" action="" onSubmit={handleSubmit}>
