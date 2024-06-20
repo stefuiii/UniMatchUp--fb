@@ -16,9 +16,10 @@ import { Box,
          NumberInputStepper, 
          NumberIncrementStepper, 
          NumberDecrementStepper,
-         Flex,
-         useToast} from '@chakra-ui/react';
+         useToast,
+         Flex} from '@chakra-ui/react';
 import { database } from "../firebase-config";
+import "./Datepicker.css";
 
 export const AddSportPost = () => {
     const [title, setTitle] = useState('');
@@ -27,17 +28,16 @@ export const AddSportPost = () => {
     const [date, setDate] = useState(new Date());
     const [number, setNumber] = useState(0);
     const toast = useToast();
-    const navigate = useNavigate();
 
     const handleSubmit = async(e) => {
       e.preventDefault();
       try {
-        await addDoc(collection(database, "postInfo"), {
+        await addDoc(collection(database, "sportPost"), {
           Title: title,
           Description: description,
           Location: location,
           Date: date.toISOString(),
-          Number: parseFloat(number)
+          Number: parseFloat(number),
         });
         console.log("Document successfully written!");
         
@@ -54,8 +54,6 @@ export const AddSportPost = () => {
         setLocation('');
         setDate('');
         setNumber(0);
-
-        navigate('/home');
       } catch (error) {
         console.error("Error writing document: ", error);
       }
@@ -68,20 +66,22 @@ export const AddSportPost = () => {
     height="100vh" 
     alignItems="center" 
     justifyContent="center" 
-    backgroundColor="gray.100"
     >
      <Container width={400}
      backdropBlur={'true'}
      backgroundColor={'lightgray'}
      alignContent={'center'}
-     bg='lightgray' 
+     justifyContent="center"
+     display={'flex'}
+     flexDirection={'column'}
+     bg='bisque' 
      color='white' 
      border ='2px solid'
      borderRadius={'20px'}
      p={0}>
       
        <Box
-         bg="gray"
+         bg="#F4A460"
          width={396}
          color="white"
          p={0}
@@ -90,56 +90,56 @@ export const AddSportPost = () => {
          textAlign="center"
          alignItems= "center"
        >
-         <Text fontSize="2xl" fontWeight="bold">Let's Go TGT</Text>
+         <Text fontSize="2xl" fontWeight="bold">Let's Do Exercise</Text>
        </Box>
 
       <Box maxWidth="1000px" 
            mx="auto" 
            mt="auto" 
            alignItems= 'center'
-           alignContent={'center'}
-           margin={'20px'}
-           display={'flex'}
+           alignContent= "center"
+           p={8}
+           display= "flex"
+           color={'gray'}
            flexDirection={'column'}>
        <form style={{ marginTop: '0px' }} onSubmit={handleSubmit}>
          <FormControl id="title" mb="3" isRequired>
            <FormLabel mb={'0'}>Title</FormLabel>
            <Input 
            bg={'white'}
-           color={'black'}
            value={title} 
            onChange={(e) => setTitle(e.target.value)}
-           type="text" placeholder="Event Title" width={300}/>
+           type="text" placeholder="Event Title" width={320}/>
          </FormControl>
 
          <FormControl id="description" mb="3" isRequired>
            <FormLabel mb={'0'}>Description</FormLabel>
            <Textarea value={description} 
            bg={'white'}
-           color={'black'}
            onChange={(e) => setDescription(e.target.value)}
            placeholder="Type the event description here." 
-           width={300}
+           width={320}
            height={100}/>
          </FormControl>
 
         <FormControl id="location" mb="3" isRequired>
-          <FormLabel mb={'0'}>Where to Meet</FormLabel>
+          <FormLabel mb={'0'}>Place to Take Your Food</FormLabel>
           <Input value={location}
           bg={'white'}
           onChange={(e) => setLocation(e.target.value)}
-          type="text" placeholder="Location" width={300}/>
+          type="text" placeholder="Location" width={320}/>
         </FormControl>
 
-        <Box display="flex" justifyContent="space-between" mb="5" width="300px">
+        <Box display="flex" justifyContent="space-between" mb="-2" width="340px">
           <FormControl 
           id="date" 
           mb="3" 
-          width="150px"
-          color={'white'}
+          width="180px"
           isRequired>
             <FormLabel mb={'0'}>Date and Time</FormLabel>
             <DatePicker
+              popperPlacement="bottom-end"
+              width='300px'
               selected={date}
               onChange={(date) => setDate(date)}
               showTimeSelect
@@ -151,7 +151,7 @@ export const AddSportPost = () => {
           <FormControl 
           id="number" 
           mb="5" 
-          width="100px"
+          width="120px"
           justifyContent="flex-end" isRequired>
             <FormLabel mb={'0'}>Number</FormLabel>
             <NumberInput
@@ -171,8 +171,13 @@ export const AddSportPost = () => {
           </NumberInput>
         </FormControl>
         </Box>
-        <Box display="flex" justifyContent="flex-end" width="100%" px={0} color={'black'}>
-    <Button
+        <Box display="flex" 
+          justifyContent={'flex-end'}
+          width="100%" 
+          color={'black'}
+          mt={3}>
+        <Button
+        mr={5}
         colorScheme='black' 
         bg={'white'}
         variant='outline' 
@@ -184,11 +189,12 @@ export const AddSportPost = () => {
         borderColor='green.500'
         padding={'0.8rem'} borderRadius={'20px'} w={'200px'} 
         alignItems={'center'}
-        mb={5}
+        mb={3}
         >Find Your Buddies!</Button>
         </Box>
+        
       </form>
-    </Box>
+      </Box>
     </Container>
     </Flex>
   );

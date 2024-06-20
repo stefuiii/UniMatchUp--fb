@@ -68,20 +68,19 @@ export const AddTutPost = () => {
     height="100vh" 
     alignItems="center" 
     justifyContent="center" 
-    backgroundColor="gray.100"
     >
      <Container width={400}
      backdropBlur={'true'}
      backgroundColor={'lightgray'}
      alignContent={'center'}
-     bg='lightgray' 
+     bg='bisque' 
      color='white' 
      border ='2px solid'
      borderRadius={'20px'}
      p={0}>
       
        <Box
-         bg="gray"
+         bg="#F4A460"
          width={396}
          color="white"
          p={0}
@@ -90,12 +89,13 @@ export const AddTutPost = () => {
          textAlign="center"
          alignItems= "center"
        >
-         <Text fontSize="2xl" fontWeight="bold">Let's Go TGT</Text>
+         <Text fontSize="2xl" fontWeight="bold">Find Your Groupmate</Text>
        </Box>
 
       <Box maxWidth="1000px" 
            mx="auto" 
            mt="auto" 
+           color={'gray'}
            alignItems= 'center'
            alignContent={'center'}
            margin={'20px'}
@@ -138,7 +138,7 @@ export const AddTutPost = () => {
           width="150px"
           color={'white'}
           isRequired>
-            <FormLabel mb={'0'}>Date and Time</FormLabel>
+            <FormLabel mb={'0'}>Due Date to Join</FormLabel>
             <DatePicker
               selected={date}
               onChange={(date) => setDate(date)}

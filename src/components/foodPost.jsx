@@ -16,8 +16,10 @@ import { Box,
          NumberInputStepper, 
          NumberIncrementStepper, 
          NumberDecrementStepper,
+         Flex,
          useToast} from '@chakra-ui/react';
-import { database } from "../firebase-config";
+import "./Datepicker.css";
+import { auth, database } from "../firebase-config";
 
 export const AddFoodPost = () => {
     const [title, setTitle] = useState('');
@@ -30,38 +32,49 @@ export const AddFoodPost = () => {
 
     const handleSubmit = async(e) => {
       e.preventDefault();
-      try {
-        await addDoc(collection(database, "foodPost"), {
-          Title: title,
-          Description: description,
-          Location: location,
-          Date: date.toISOString(),
-          Number: parseFloat(number),
-          Menu: menu
-        });
-        console.log("Document successfully written!");
+      const user = auth.currentUser;
+      if (user) {
+        const uid = user.uid;
+        try {
+          await addDoc(collection(database, "foodPost"), {
+            uid: uid,
+            Title: title,
+            Description: description,
+            Location: location,
+            Date: date.toISOString(),
+            Number: parseFloat(number),
+            Menu: menu
+          });
+          console.log("Document successfully written!");
+          
+          toast({
+            title: "Post created.",
+            description: "Your post has been successfully created.",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+  
+          setTitle('');
+          setDescription('');
+          setLocation('');
+          setDate('');
+          setNumber(0);
+        } catch (error) {
+          console.error("Error writing document: ", error);
+        }
         
-        toast({
-          title: "Post created.",
-          description: "Your post has been successfully created.",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-
-        setTitle('');
-        setDescription('');
-        setLocation('');
-        setDate('');
-        setNumber(0);
-      } catch (error) {
-        console.error("Error writing document: ", error);
       }
       
     }
 
   
    return (
+    <Flex 
+    height="100vh" 
+    alignItems="center" 
+    justifyContent="center"
+    >
      <Container width={400}
      backdropBlur={'true'}
      backgroundColor={'lightgray'}
@@ -69,14 +82,14 @@ export const AddFoodPost = () => {
      justifyContent="center"
      display={'flex'}
      flexDirection={'column'}
-     bg='lightgray' 
+     bg='bisque' 
      color='white' 
      border ='2px solid'
      borderRadius={'20px'}
      p={0}>
       
        <Box
-         bg="gray"
+         bg="#F4A460"
          width={396}
          color="white"
          p={0}
@@ -85,7 +98,7 @@ export const AddFoodPost = () => {
          textAlign="center"
          alignItems= "center"
        >
-         <Text fontSize="2xl" fontWeight="bold">Discover More Food!</Text>
+         <Text fontSize="2xl" fontWeight="bold">Discover More Food</Text>
        </Box>
 
       <Box maxWidth="1000px" 
@@ -95,6 +108,7 @@ export const AddFoodPost = () => {
            alignContent= "center"
            p={8}
            display= "flex"
+           color={'gray'}
            flexDirection={'column'}>
        <form style={{ marginTop: '0px' }} onSubmit={handleSubmit}>
          <FormControl id="title" mb="3" isRequired>
@@ -132,6 +146,8 @@ export const AddFoodPost = () => {
           isRequired>
             <FormLabel mb={'0'}>Date and Time</FormLabel>
             <DatePicker
+              popperPlacement="bottom-end"
+              width='300px'
               selected={date}
               onChange={(date) => setDate(date)}
               showTimeSelect
@@ -163,12 +179,12 @@ export const AddFoodPost = () => {
           </NumberInput>
         </FormControl>
         </Box>
-        <FormControl id="title" mb="3" isRequired>
+        <FormControl id="find" mb="3" isRequired>
           <FormLabel  mb={'0'} mt={'0'}>View the Menu
           <Input 
            bg={'white'}
            value={menu} 
-           onChange={(e) => setTitle(e.target.value)}
+           onChange={(e) => setMenu(e.target.value)}
            type="text" placeholder="Copy the menu URL here" width={320}/>
           </FormLabel>
         </FormControl>
@@ -197,5 +213,6 @@ export const AddFoodPost = () => {
       </form>
       </Box>
     </Container>
+    </Flex>
   );
 };

@@ -18,7 +18,7 @@ import { Box,
          NumberDecrementStepper,
          Flex,
          useToast} from '@chakra-ui/react';
-import { database } from "../firebase-config";
+import { auth, database } from "../firebase-config";
 
 export const AddGrabPost = () => {
     const [title, setTitle] = useState('');
@@ -31,34 +31,41 @@ export const AddGrabPost = () => {
 
     const handleSubmit = async(e) => {
       e.preventDefault();
-      try {
-        await addDoc(collection(database, "postInfo"), {
-          Title: title,
-          Description: description,
-          Location: location,
-          Date: date.toISOString(),
-          Number: parseFloat(number)
-        });
-        console.log("Document successfully written!");
-        
-        toast({
-          title: "Post created.",
-          description: "Your post has been successfully created.",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
+      const user = auth.currentUser;
 
-        setTitle('');
-        setDescription('');
-        setLocation('');
-        setDate('');
-        setNumber(0);
-
-        navigate('/home');
-      } catch (error) {
-        console.error("Error writing document: ", error);
+      if (user) {
+        const uid = user.uid;
+        try {
+          await addDoc(collection(database, "postInfo"), {
+            uid: uid,
+            Title: title,
+            Description: description,
+            Location: location,
+            Date: date.toISOString(),
+            Number: parseFloat(number)
+          });
+          console.log("Document successfully written!");
+          
+          toast({
+            title: "Post created.",
+            description: "Your post has been successfully created.",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+  
+          setTitle('');
+          setDescription('');
+          setLocation('');
+          setDate('');
+          setNumber(0);
+  
+          navigate('/home');
+        } catch (error) {
+          console.error("Error writing document: ", error);
+        }
       }
+      
       
     }
 
@@ -67,21 +74,20 @@ export const AddGrabPost = () => {
     <Flex 
     height="100vh" 
     alignItems="center" 
-    justifyContent="center" 
-    backgroundColor="gray.100"
+    justifyContent="center"
     >
      <Container width={400}
      backdropBlur={'true'}
      backgroundColor={'lightgray'}
      alignContent={'center'}
-     bg='lightgray' 
+     bg='bisque' 
      color='white' 
      border ='2px solid'
      borderRadius={'20px'}
      p={0}>
       
        <Box
-         bg="gray"
+         bg="#F4A460"
          width={396}
          color="white"
          p={0}
@@ -98,6 +104,7 @@ export const AddGrabPost = () => {
            mt="auto" 
            alignItems= 'center'
            alignContent={'center'}
+           color={'gray'}
            margin={'20px'}
            display={'flex'}
            flexDirection={'column'}>
