@@ -19,7 +19,7 @@ import { Box,
          useToast,
          Flex} from '@chakra-ui/react';
 import { database } from "../firebase-config";
-import "./Datepicker.css";
+import "../format/Datepicker.css";
 
 export const AddSportPost = () => {
     const [title, setTitle] = useState('');

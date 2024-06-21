@@ -18,7 +18,7 @@ import { Box,
          NumberDecrementStepper,
          Flex,
          useToast} from '@chakra-ui/react';
-import "./Datepicker.css";
+import "../format/Datepicker.css";
 import { auth, database } from "../firebase-config";
 
 export const AddFoodPost = () => {
