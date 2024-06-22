@@ -10,7 +10,10 @@ import { AddGrabPost } from './components/grabPost';
 import { AddFoodPost } from './components/foodPost';
 import { AddSportPost } from './components/sportPost';
 import { AddTutPost } from './components/tutorialPost';
-import { ShowFood } from './components/shownPosts';
+import { ShowFood } from './components/FoodPage';
+import { ShowGrab } from './components/GrabPage';
+import { ShowSport } from './components/SportPage';
+import { ShowGroup } from './components/GroupPage';
 import { ChakraProvider } from '@chakra-ui/react';
 
 
@@ -33,6 +36,9 @@ function App() {
         <Route path="/addsportpost" element={<AddSportPost />} />
         <Route path="/addtutpost" element={<AddTutPost />} />
         <Route path="/showfood" element={<ShowFood />} />
+        <Route path="/showgrab" element={<ShowGrab />} />
+        <Route path="/showsport" element={<ShowSport />} />
+        <Route path="/showgroup" element={<ShowGroup />} />
       </Routes>
     </Router>
     </ChakraProvider>
