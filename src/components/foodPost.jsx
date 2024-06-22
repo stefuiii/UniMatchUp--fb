@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { doc, setDoc, addDoc, collection} from 'firebase/firestore';
+import { doc, setDoc, addDoc, collection, Timestamp} from 'firebase/firestore';
 import { Box, 
          Text,
          Button, 
@@ -41,7 +41,7 @@ export const AddFoodPost = () => {
             Title: title,
             Description: description,
             Location: location,
-            Date: date.toISOString(),
+            Date: Timestamp.fromDate(date),
             Number: parseFloat(number),
             Menu: menu
           });
