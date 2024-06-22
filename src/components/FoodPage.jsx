@@ -60,6 +60,7 @@ const ShowPosts = ({post}) => {
 export const ShowFood = () => {
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [search, setSearch] = useState('');
     const postsPerPage = 4;
 
     useEffect (() => {
@@ -74,7 +75,12 @@ export const ShowFood = () => {
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+    
+    const filteredPosts = posts.filter(post => 
+      post.Title.toLowerCase().includes(search.toLowerCase())
+    );
+    const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+    //const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
     const handleNextPage = () => {
       if (currentPage < Math.ceil(posts.length / postsPerPage)) {
@@ -105,7 +111,9 @@ export const ShowFood = () => {
               <InputLeftElement pointerEvents='none'>
                 <SearchIcon marginTop={'3'}color='gray.300' />
               </InputLeftElement>
-              <Input 
+              <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)} 
               width={'600px'}
               borderRadius={'15'}
               placeholder='Search for Your Buddies' />
