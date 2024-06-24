@@ -15,6 +15,8 @@ jobs:
           CI: false
       - run: npm ci && npm run build || true
       - uses: FirebaseExtended/action-hosting-deploy@v0
+        env:
+          CI: false
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_UNIMATCHUP }}
