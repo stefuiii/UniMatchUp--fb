@@ -60,7 +60,6 @@ export const AddGrabPost = () => {
           setDate('');
           setNumber(0);
   
-          navigate('/home');
         } catch (error) {
           console.error("Error writing document: ", error);
         }

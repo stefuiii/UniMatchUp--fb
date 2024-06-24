@@ -15,14 +15,16 @@ import { ShowGrab } from './components/GrabPage';
 import { ShowSport } from './components/SportPage';
 import { ShowGroup } from './components/GroupPage';
 import { ChakraProvider } from '@chakra-ui/react';
+import { Landing } from './components/landing';
 
 
 function App() {
-  const [currentForm, setCurrentForm] = useState('login');
+  const [currentForm, setCurrentForm] = useState('landing');
 
   const toggleForm = (formName) => {
     setCurrentForm(formName);
   }
+
   return (
     <ChakraProvider>
     <Router>
@@ -30,7 +32,7 @@ function App() {
         <Route path="/login" element={<Login onFormSwitch={toggleForm} />} />
         <Route path="/register" element={<Register onFormSwitch={toggleForm} />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/" element={<Login onFormSwitch={toggleForm} />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/addpost" element={<AddGrabPost />} />
         <Route path="/addfoodpost" element={<AddFoodPost />} />
         <Route path="/addsportpost" element={<AddSportPost />} />
@@ -39,6 +41,7 @@ function App() {
         <Route path="/showgrab" element={<ShowGrab />} />
         <Route path="/showsport" element={<ShowSport />} />
         <Route path="/showgroup" element={<ShowGroup />} />
+        <Route path="/landing" element={<Landing />} />
       </Routes>
     </Router>
     </ChakraProvider>
