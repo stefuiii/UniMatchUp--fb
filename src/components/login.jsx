@@ -36,7 +36,7 @@ export const Login = (props) => {
     };
 
     const handleRegisterClick = () => {
-        console.log('Button clicked!'); // 添加这行来检查点击事件是否被触发
+        console.log('Button clicked!'); 
         props.onFormSwitch('register');
         navigate('/register');
     };

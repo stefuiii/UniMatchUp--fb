@@ -10,7 +10,7 @@ import { Box, Heading, FormControl, FormLabel, Button,
          InputGroup,
          InputLeftElement,
          ChakraProvider,
-         Input} from "@chakra-ui/react";
+         Input, Flex } from "@chakra-ui/react";
 import { CalendarIcon, InfoIcon, SearchIcon, PhoneIcon } from "@chakra-ui/icons";
 import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
 import "../format/oneLineDescription.css"
@@ -94,6 +94,16 @@ export const ShowGrab = () => {
 
     return (
         <ChakraProvider>
+          <Flex
+          bg={"#FFEFDA"}
+          width='100vw'
+          height='100vh'
+          display="flex"
+          flexDirection="column"
+          justifyContent="center" 
+          alignItems="center"
+          alignContent="center"
+          p={10}>
           <Box 
             style={{ display: 'flex', 
             justifyContent: 'center', 
@@ -114,6 +124,7 @@ export const ShowGrab = () => {
               onChange={(e) => setSearch(e.target.value)} 
               width={'600px'}
               borderRadius={'15'}
+              bg={"white"}
               placeholder='Search for Your Buddies' />
             </InputGroup>
             </HStack>
@@ -137,6 +148,7 @@ export const ShowGrab = () => {
         </ButtonGroup>
           </Box>
           </Box>
+          </Flex>
         </ChakraProvider>
     );
 }

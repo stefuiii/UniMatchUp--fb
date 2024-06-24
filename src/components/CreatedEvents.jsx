@@ -2,52 +2,46 @@ import React, { Component, useEffect, useState } from "react";
 //import "./Registration.css";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, database } from "../firebase-config.js";
-import { collection, addDoc, doc, setDoc, getDoc, getDocs, orderBy, query} from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword} from "firebase/auth";
+import { collection, addDoc, doc, setDoc, getDoc, getDocs, orderBy, query, where} from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword, useAuthState } from "firebase/auth";
 import { Box, Heading, FormControl, FormLabel, Button, 
          Stack, Text, Divider, ButtonGroup,
          HStack, PostCard, 
          InputGroup,
          InputLeftElement,
          ChakraProvider,
-         Input, Flex } from "@chakra-ui/react";
+         Input, Flex, 
+         useRadio, Grid } from "@chakra-ui/react";
 import { CalendarIcon, InfoIcon, SearchIcon, PhoneIcon } from "@chakra-ui/icons";
 import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
 import "../format/oneLineDescription.css"
 import postAvatar from "../icons/avatar13.svg"
-import groupHeading from "../icons/工作汇报.svg"
+import grabHeading from "../icons/打车场景.svg"
 
 const ShowPosts = ({post}) => {
     const date = post.Date.toDate().toLocaleString();
     return (
-    <Card maxW='sm' width="300px" height="280px" justifyContent={'center'}>
+    <Card maxW='sm' width="150px" height="200px" justifyContent={'center'}>
       <CardBody>
-        <Stack mt='2' spacing='3'>
+        <Stack spacing='3'>
           <HStack spacing={100}>
-            <Heading size='md'>{post.Title}</Heading>
-            <img src={postAvatar} alt="Avatar" width="50" height="50"/>
+            <Heading size='xs'>{post.Title}</Heading>
           </HStack>
-          <Text className="one-line-description" fontSize="sm">
-            {post.Description}
-          </Text>
       </Stack>
       <HStack mt={'4'} spacing={'3'}>
         <CalendarIcon boxSize={4} color={"gray.600"}/>
-        <Text fontSize="sm">{date}</Text>
+        <Text fontSize="xs">{date}</Text>
       </HStack>
       <HStack mt={'3'} spacing={'3'}>
         <InfoIcon boxSize={4} color={"gray.600"}/>
-        <Text fontSize="sm">{post.Location}</Text>
+        <Text fontSize="xs">{post.Location}</Text>
       </HStack>
       </CardBody>
-      <CardFooter style={{ marginTop: '-20px' }}
-        justifyContent={'left'} mt={'0'}>
+      <CardFooter style={{ marginTop: '-30px' }}
+        justifyContent={'left'}>
         <ButtonGroup spacing='4' justifyContent={'flex-start'}>
-          <Button variant='solid' colorScheme='blue' fontSize="xs">
+          <Button size="sm" variant='solid' colorScheme='blue' fontSize="xs">
             Join Us(1/6)
-          </Button>
-          <Button variant='ghost' colorScheme='blue' fontSize="xs">
-            View Event Details
           </Button>
         </ButtonGroup>
       </CardFooter>
@@ -57,18 +51,29 @@ const ShowPosts = ({post}) => {
 
 }
 
-export const ShowGroup = () => {
+export const ShowAll = () => {
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [search, setSearch] = useState('');
     const postsPerPage = 4;
+    const user = auth.currentUser;
 
     useEffect (() => {
         const fetchPosts = async () => {
-            const postsCollection = query(collection(database, "groupPost"), orderBy("Date", "asc"));
-            const querySnapshot = await getDocs(postsCollection);
-            const postsData = querySnapshot.docs.map(doc => doc.data());
-            setPosts(postsData);
+            if (user) {
+              let allPosts = [];
+              const collections = ["postInfo", "foodPost", "sportPost", "groupPost"];
+
+              for (const perCollect of collections) {
+                const postsCollection = query(collection(database, perCollect), 
+                where ("uid", "==", user.uid),
+                orderBy("Date", "asc"));
+                const querySnapshot = await getDocs(postsCollection);
+                const postsData = querySnapshot.docs.map(doc => doc.data());
+                allPosts = [...allPosts, ...postsData];
+              }
+              setPosts(allPosts);
+            }
         };
         fetchPosts();
     }, []);
@@ -94,44 +99,16 @@ export const ShowGroup = () => {
 
     return (
         <ChakraProvider>
-          <Flex
-          bg={"white"}
-          width='100vw'
-          height='100vh'
-          display="flex"
-          flexDirection="column"
-          justifyContent="center" 
-          alignItems="center"
-          alignContent="center"
-          p={10}>
           <Box 
             style={{ display: 'flex', 
             justifyContent: 'center', 
             alignItems: 'center', 
-            flexDirection: 'column', 
-            marginTop: '100px',
-            gap: '20px', height: '80vh' }}>
-            <Box mt={-10}>
-              <img src={groupHeading} alt="Avatar" height={300} width={250}/>
-            </Box>
-            <HStack spacing={'4'} mt={-10}>
-            <InputGroup>
-              <InputLeftElement pointerEvents='none'>
-                <SearchIcon marginTop={'3'}color='gray.300' />
-              </InputLeftElement>
-              <Input 
-              value={search}
-              onChange={(e) => setSearch(e.target.value)} 
-              width={'600px'}
-              borderRadius={'15'}
-              placeholder='Search for Your Buddies' />
-            </InputGroup>
-            </HStack>
-          <HStack marginTop={5} spacing={4} overflowX="auto">
-            {currentPosts.map((post, index) => (
+            flexDirection: 'column'}}>
+           <Grid templateColumns="repeat(2, 1fr)" gap={6} marginTop={5}>
+          {currentPosts.map((post, index) => (
             <ShowPosts key={index} post={post} />
-            ))}
-          </HStack>
+          ))}
+        </Grid>
           <Box style={{ display: 'flex', 
             justifyContent: 'center', 
             alignItems: 'center', 
@@ -147,7 +124,6 @@ export const ShowGroup = () => {
         </ButtonGroup>
           </Box>
           </Box>
-          </Flex>
         </ChakraProvider>
     );
 }

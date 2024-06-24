@@ -123,7 +123,7 @@ export const AddSportPost = () => {
          </FormControl>
 
         <FormControl id="location" mb="3" isRequired>
-          <FormLabel mb={'0'}>Place to Take Your Food</FormLabel>
+          <FormLabel mb={'0'}>Court</FormLabel>
           <Input value={location}
           bg={'white'}
           onChange={(e) => setLocation(e.target.value)}

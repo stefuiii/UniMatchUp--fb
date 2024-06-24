@@ -136,7 +136,7 @@ export const AddTutPost = () => {
           id="date" 
           mb="3" 
           width="150px"
-          color={'white'}
+          color={'gray'}
           isRequired>
             <FormLabel mb={'0'}>Due Date to Join</FormLabel>
             <DatePicker
